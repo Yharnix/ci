@@ -1,0 +1,14 @@
+name: Simple Workflow
+
+on: [push] # Triggers the workflow on every push to the repository
+
+jobs:
+  build-and-greet:
+    runs-on: ubuntu-latest # Specifies the operating system for the runner
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4 # Action to check out your repository code
+
+      - name: Greet the user
+        run: echo "Hello, GitHub Actions!" # Runs a simple shell command
