@@ -6,8 +6,8 @@ on:
     inputs:
       plan:
         required: false
-	type: string
-	default: auto
+        type: string
+        default: auto
 
 permissions:
   id-token: write
