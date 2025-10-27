@@ -2,13 +2,13 @@ on:
   workflow_call:
     inputs:
       repo: 
-        required: true
+        required: false
         type: string
       user: 
-        required: true
+        required: false
         type: string
       pr: 
-        required: true
+        required: false
         type: string
     outputs:
       image: 
@@ -26,6 +26,6 @@ jobs:
       - name: Build the docker image
         run: |
           IMAGE_TAG=${{github.sha}}
-	  echo "Building Docker image with tag $IMAGE_TAG "
-	  docker build -t my-app:$IMAGE_TAG
+          echo "Building Docker image with tag $IMAGE_TAG "
+          docker build -t my-app:$IMAGE_TAG
 
