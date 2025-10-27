@@ -1,0 +1,31 @@
+on:
+  workflow_call:
+    inputs:
+      repo: 
+        required: true
+        type: string
+      user: 
+        required: true
+        type: string
+      pr: 
+        required: true
+        type: string
+    outputs:
+      image: 
+        value: ${{jobs.test-oidc.outputs.access_key}}
+permissions:
+  id-token: write
+  
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+      uses: actions/checkout@v4
+      
+      - name: Build the docker image
+      run: |
+        IMAGE_TAG=${{github.sha}}
+	echo "Building Docker image with tag $IMAGE_TAG "
+	docker build -t my-app:$IMAGE_TAG
+
