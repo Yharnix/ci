@@ -21,11 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repo
-      uses: actions/checkout@v4
+        uses: actions/checkout@v4
       
       - name: Build the docker image
-      run: |
-        IMAGE_TAG=${{github.sha}}
-	echo "Building Docker image with tag $IMAGE_TAG "
-	docker build -t my-app:$IMAGE_TAG
+        run: |
+          IMAGE_TAG=${{github.sha}}
+	  echo "Building Docker image with tag $IMAGE_TAG "
+	  docker build -t my-app:$IMAGE_TAG
 
