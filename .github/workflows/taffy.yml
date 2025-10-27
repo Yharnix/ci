@@ -21,4 +21,4 @@ jobs:
           aws sts get-caller-identity
           aws s3 ls
       - name: Build Image
-      uses: Yharnix/ci/.github/workflows/docker_build.yml@master 
+        uses: Yharnix/ci/.github/workflows/docker_build.yml@master 
