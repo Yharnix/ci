@@ -19,6 +19,8 @@ permissions:
 jobs:
   auth:
     uses: Yharnix/ci/.github/workflows/issue_ecr_creds.yml@master
+    with:
+      workflow_ref: $GITHUB_WORFLOW
   build-image:
     needs:
       - auth
