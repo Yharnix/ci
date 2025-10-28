@@ -33,11 +33,14 @@ jobs:
       ACCOUNT_ID: "037444031381"
       REPO: taffy-images
       IMAGE_TAG: ${{ github.sha }}
-      OWNER: ${{ github.repository_owner }}
-      NAME: ${{ github.repository_name }}
+      # OWNER: ${{ github.repository_owner }}
+      # NAME: ${{ github.repository_name }}
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: List files in workspace
         run: |
           echo "Current directory: $(pwd)"
@@ -54,5 +57,5 @@ jobs:
       - name: Push to taffy-images
         run: |
           ECR_URI="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images"
-          docker tag my-app:"$IMAGE_TAG" "$ECR_URI:$IMAGE_TAG" "$OWNER" "$NAME"
+          docker tag my-app:"$IMAGE_TAG" "$ECR_URI:$IMAGE_TAG"
           docker push "$ECR_URI:$IMAGE_TAG"
