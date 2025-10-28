@@ -26,9 +26,9 @@ jobs:
       - auth
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY_ID: ${{ needs.auth-and-run.outputs.access_key }}
-      AWS_SECRET_ACCESS_KEY: ${{ needs.auth-and-run.outputs.secret_access }}
-      AWS_SESSION_TOKEN: ${{ needs.auth-and-run.outputs.session_token }}
+      AWS_ACCESS_KEY_ID: ${{ needs.auth.outputs.access_key }}
+      AWS_SECRET_ACCESS_KEY: ${{ needs.auth.outputs.secret_access }}
+      AWS_SESSION_TOKEN: ${{ needs.auth.outputs.session_token }}
       AWS_REGION: us-east-1
       ACCOUNT_ID: "037444031381"
       REPO: taffy-images
