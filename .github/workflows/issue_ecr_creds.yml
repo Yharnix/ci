@@ -1,0 +1,56 @@
+name: Test OIDC
+
+on:
+  workflow_call:
+    inputs:
+      workflow_ref: # Pass $GITHUB_WORKFLOW to this that way the auth provider can provide correct credenitals
+        required: true
+        type: string
+    outputs:
+      access_key: 
+        value: ${{jobs.test-oidc.outputs.access_key}}
+      secret_access: 
+        value: ${{jobs.test-oidc.outputs.secret_access}}
+      session_token: 
+        value: ${{jobs.test-oidc.outputs.session_token}}
+
+
+permissions:
+  id-token: write
+
+jobs:
+  test-oidc:
+    runs-on: ubuntu-latest
+    outputs:
+      access_key: ${{steps.out.outputs.access_key}}
+      secret_access: ${{steps.out.outputs.secret_access}}
+      session_token: ${{steps.out.outputs.session_token}}
+    steps:
+      - name: Get OIDC Token and Send to API
+        id: out
+        run: |
+          echo "Fetching OIDC token..."
+          token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com")
+
+          echo "Token acquired. Posting to API..."
+
+          # Use jq to safely wrap it in JSON
+          payload=$(jq -n --arg token "$token" '{token: $token}')
+
+          response=$(curl -X POST -H "Content-Type: application/json" \
+            -d "$payload" \
+            "https://2sc5lj0u1l.execute-api.us-east-1.amazonaws.com/prod2/ecr")
+          AWS_ACCESS_KEY_ID=$(echo "$response" | jq -r '.AccessKeyId')
+          AWS_SECRET_ACCESS_KEY=$(echo "$response" | jq -r '.SecretAccessKey')
+          AWS_SESSION_TOKEN=$(echo "$response" | jq -r '.SessionToken' )
+          
+          echo "Caller script:  ${{ inputs.workflow_ref }}"
+
+          echo $AWS_ACCESS_KEY_ID 
+          echo $AWS_SECRET_ACCESS_KEY
+          echo $AWS_SESSION_TOKEN
+
+          echo "access_key=$AWS_ACCESS_KEY_ID" >> $GITHUB_OUTPUT
+          echo "secret_access=$AWS_SECRET_ACCESS_KEY" >> $GITHUB_OUTPUT
+          echo "session_token=$AWS_SESSION_TOKEN" >> $GITHUB_OUTPUT
