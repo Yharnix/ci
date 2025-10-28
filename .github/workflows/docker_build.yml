@@ -52,7 +52,7 @@ jobs:
           echo "Building Docker image with tag $IMAGE_TAG "
           docker build -t my-app:$IMAGE_TAG ./
       - name: Login to ECR
-        run: >
+        run: |
           aws ecr get-login-password --region "$AWS_REGION" \
           | docker login --username AWS --password-stdin "$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com"
       - name: Push to taffy-images
