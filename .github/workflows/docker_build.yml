@@ -41,6 +41,7 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - name: List files in workspace
         run: |
           echo "Current directory: $(pwd)"
