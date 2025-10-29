@@ -58,6 +58,9 @@ jobs:
       - name: Push to taffy-images
         run: |
           ECR_URI="$ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/taffy-images"
+
+	  REPO_TAG_SAFE="${REPO_TAG//\//-}"
+	  IMAGE_TAG_SAFE="${IMAGE_TAG:0:12}"
           docker tag my-app:build "$ECR_URI:$IMAGE_TAG" 
-          docker tag my-app:build "$ECR_URI:${OWNER_TAG}-${REPO_TAG}-${IMAGE_TAG}" 
-          docker push "$ECR_URI:${OWNER_TAG}-${REPO_TAG}-${IMAGE_TAG}"
+          docker tag my-app:build "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}" 
+          docker push "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}"
