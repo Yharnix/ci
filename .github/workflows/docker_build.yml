@@ -67,6 +67,7 @@ jobs:
       - name: Start task creation
         run: |
           IMAGE_TAG_SAFE="${IMAGE_TAG:0:12}"
-          curl -X GET "https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=${IMAGE_TAG_SAFE}&owner=${OWNER_TAG}&repo=${REPO_TAG}&pr=5" # NOTE Make pr a valid tag in the future
+          REPO_TAG_SAFE="${REPO_TAG//\//-}"
+          curl -X GET "https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=${IMAGE_TAG_SAFE}&owner=${OWNER_TAG}&repo=${REPO_TAG_SAFE}&pr=5" # NOTE Make pr a valid tag in the future
 # hmake api call to start task
 # https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=48&owner=malcolm&repo=test&pr=3
