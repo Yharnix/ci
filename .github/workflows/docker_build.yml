@@ -65,7 +65,7 @@ jobs:
           docker tag my-app:build "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}" 
           docker push "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}"
       - name: Start task creation
-      run: |
-        curl -X GET "https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=${{ IMAGE_TAG }}&owner=${{ OWNER_TAG }}&repo=${{ REPO_TAG }}&pr=5" # NOTE Make pr a valid tag in the future
+        run: |
+          curl -X GET "https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=${{ IMAGE_TAG }}&owner=${{ OWNER_TAG }}&repo=${{ REPO_TAG }}&pr=5" # NOTE Make pr a valid tag in the future
 # hmake api call to start task
 # https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=48&owner=malcolm&repo=test&pr=3
