@@ -35,6 +35,7 @@ jobs:
       IMAGE_TAG: ${{ github.sha }}
       OWNER_TAG: ${{ github.repository_owner }}
       REPO_TAG: ${{ github.repository }}
+      PR_TAG: ${{ github.event.pull_request.number }}
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -62,12 +63,12 @@ jobs:
           REPO_TAG_SAFE="${REPO_TAG#$OWNER_TAG/}"
           IMAGE_TAG_SAFE="${IMAGE_TAG:0:12}"
           docker tag my-app:build "$ECR_URI:$IMAGE_TAG" 
-          docker tag my-app:build "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}" 
-          docker push "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}"
+          docker tag my-app:build "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}-${PR_TAG}" 
+          docker push "$ECR_URI:${OWNER_TAG}-${REPO_TAG_SAFE}-${IMAGE_TAG_SAFE}-${PR_TAG}"
       - name: Start task creation
         run: |
           IMAGE_TAG_SAFE="${IMAGE_TAG:0:12}"
           REPO_TAG_SAFE="${REPO_TAG#$OWNER_TAG/}"
-          curl -X GET "https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=${IMAGE_TAG_SAFE}&owner=${OWNER_TAG}&repo=${REPO_TAG_SAFE}&pr=5" # NOTE Make pr a valid tag in the future
+          curl -X GET "https://taffyrunner.taffyrun.com/?sha=${IMAGE_TAG_SAFE}&owner=${OWNER_TAG}&repo=${REPO_TAG_SAFE}&pr=${PR_TAG}" # NOTE Make pr a valid tag in the future
 # hmake api call to start task
 # https://lk90fiezxj.execute-api.us-east-1.amazonaws.com/prod?sha=48&owner=malcolm&repo=test&pr=3
